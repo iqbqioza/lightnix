@@ -103,3 +103,23 @@ ELF64/x86_64オブジェクトを生成します。glibcとlibstdc++は未構築
 `build/work/gcc-bootstrap.*`、成功記録は`build/stamps/gcc-bootstrap.success`です。
 失敗時も作業先とログを保持し、再実行は新しい作業先で行います。
 後続工程を始めた後の再実行は避けてください。
+
+## Linux APIヘッダ
+
+```sh
+make linux-headers
+```
+
+構築済みのクロスGCCを使い、専用コンテナ内でLinuxソースを検証・展開します。
+バージョンはマニフェストから読み取ります。LFS 12.4第5.4節に従い、
+`make mrproper`と`make headers`でx86向けAPIヘッダを生成し、`.h`ファイルだけを
+`build/rootfs/usr/include`へコピーします。カーネル本体はコンパイルしません。
+
+コピー元と配置先の全ヘッダを比較し、必要なLinux/asmヘッダを確認します。
+ホストのインクルードパスを無効にしたクロスGCCで、型・システムコール定義・
+マニフェストに対応するAPIバージョンをコンパイル検証します。
+
+ログは`build/logs/linux-headers.*.log`、作業先は`build/work/linux-headers.*`、
+成功記録は`build/stamps/linux-headers.success`に保存します。
+再実行は新しい作業先を使い、同じ配置先へ上書きします。別バージョンへの更新では
+古いヘッダを自動削除しないため、新しいrootfsから構築してください。
