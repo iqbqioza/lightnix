@@ -31,4 +31,20 @@ aptの取得先は更新されるため、再ビルド後は`make builder-check`
 ```
 
 ここで用意したのはブートストラップ用のホストツール。
-Lightnix向けのGCC 15.2.0とglibc 2.42は、これからソースから構築する。
+Lightnix向けのGCCとglibcは、このホストツールからソース構築する。
+
+## クロスGCCの検証結果
+
+2026-10-30、`gcc-bootstrap`レシピでGCC 15.2.0と同梱するGMP/MPFR/MPCを構築し、
+`build/rootfs/tools`へインストールした。コンパイルとインストールは約25分。
+
+- ターゲット: `x86_64-lfs-linux-gnu`
+- sysroot: コンテナ内の`/work/build/rootfs`
+- C/C++両コンパイラのバージョン、ターゲット、sysrootを検証
+- クロスBinutilsのアセンブラとリンカを使用することをファイル実体で確認
+- C/C++からELF64・x86_64の再配置可能オブジェクトを生成
+- LFSの手順に従い、内部ヘッダの`limits.h`を補完
+
+ビルド完了後、検証処理のパス比較を修正し、`verify-gcc-bootstrap.sh`を再実行して成功。
+glibc、libstdc++、通常の実行ファイルのリンクは後続工程。
+GCCの公式テストスイートは未実行。
