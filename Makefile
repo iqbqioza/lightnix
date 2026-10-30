@@ -1,4 +1,4 @@
-.PHONY: help check-host prepare builder-image builder-check builder-shell fetch verify-sources binutils-bootstrap gcc-bootstrap linux-headers glibc-bootstrap libstdcxx-bootstrap m4-bootstrap ncurses-bootstrap
+.PHONY: help check-host prepare builder-image builder-check builder-shell fetch verify-sources binutils-bootstrap gcc-bootstrap linux-headers glibc-bootstrap libstdcxx-bootstrap m4-bootstrap ncurses-bootstrap bash-bootstrap
 
 help:
 	@printf '%s\n' 'check-host  LFSビルド環境を検査' 'prepare     検査後に構築先と環境ファイルを作成'
@@ -10,6 +10,10 @@ help:
 	@printf '%s\n' 'libstdcxx-bootstrap  C++標準ライブラリを構築・検証'
 	@printf '%s\n' 'm4-bootstrap  一時環境用M4を構築・検証'
 	@printf '%s\n' 'ncurses-bootstrap  ホスト用ticとNcursesを構築・検証'
+	@printf '%s\n' 'bash-bootstrap  一時環境用Bashを構築・検証'
+
+bash-bootstrap:
+	bash scripts/builder.sh bash scripts/bash-bootstrap.sh
 
 ncurses-bootstrap:
 	bash scripts/builder.sh bash scripts/ncurses-bootstrap.sh

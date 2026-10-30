@@ -207,3 +207,25 @@ C++共有バインディング、ヘッダ、端末データベースを構築�
 ログは`build/logs/ncurses-bootstrap.*.log`、作業先は`build/work/ncurses-bootstrap.*`、
 リンクと実行時ライブラリの詳細は作業先の`link.log`と`libraries.log`、
 成功記録は`build/stamps/ncurses-bootstrap.success`です。
+
+## 一時ツール: Bash
+
+```sh
+make fetch
+make bash-bootstrap
+```
+
+一時ツールのマニフェストからBashソースとバージョンを読み、SHA-256検証後に
+新しい作業先へ展開します。LFS 12.4第6.4節に従って`--without-bash-malloc`で
+クロスコンパイルし、`DESTDIR`をrootfsに指定して`usr/bin/bash`へ配置します。
+`usr/bin/sh`から`bash`への相対リンクを作り、既存の`bin -> usr/bin`経由でも使用します。
+
+インストール結果とビルドしたバイナリの一致、ELF形式、動的ローダ、Ncursesとglibcの
+実行時参照先を検証します。Lightnixのローダを明示し、起動設定を読み込まず、ホストの
+外部コマンドをPATHから除いた状態で、変数・配列・算術・コマンド置換・ループ・
+printfとshリンク経由の実行を確認します。
+対話的シェル、chroot、Bash公式テストスイートは検証対象に含めません。
+
+ログは`build/logs/bash-bootstrap.*.log`、作業先は`build/work/bash-bootstrap.*`、
+ライブラリ解決結果は作業先の`libraries.log`、成功記録は
+`build/stamps/bash-bootstrap.success`です。

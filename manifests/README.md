@@ -3,7 +3,7 @@
 `toolchain.json`はLFS 12.4第5章のクロスツールチェーン用の入力を固定する。
 最終システム全体のパッケージ一覧ではない。
 
-`temporary-tools.json`は第6章の一時ツール用。現在はM4とNcursesを収録し、後続ツールは順次追加する。
+`temporary-tools.json`は第6章の一時ツール用。現在はM4・Ncurses・Bashを収録し、後続ツールは順次追加する。
 `make fetch`と`make verify-sources`は両マニフェストを対象にする。
 
 - Binutils、GCC、Linux API headers、glibc

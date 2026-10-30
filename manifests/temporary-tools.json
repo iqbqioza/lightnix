@@ -24,6 +24,16 @@
       "sha256": "b071468b8c79099a378ed9bea937a605509f71e720402e2541abe20ad753c555",
       "lfs_md5": "679987405412f970561cc85e1e6428a2",
       "size_bytes": 3790967
+    },
+    {
+      "name": "bash",
+      "version": "5.3",
+      "kind": "archive",
+      "filename": "bash-5.3.tar.gz",
+      "url": "https://ftp.gnu.org/gnu/bash/bash-5.3.tar.gz",
+      "sha256": "0d5cd86965f869a26cf64f4b71be7b96f90a3ba8b3d74e27e8e9d9d5550f31ba",
+      "lfs_md5": "977c8c0c5ae6309191e7768e28ebc951",
+      "size_bytes": 11355854
     }
   ]
 }
