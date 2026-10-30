@@ -12,8 +12,8 @@
 - 起動: まずQEMU、後から実機用のカーネル設定と起動メディア
 - 配置先: リポジトリ内の`build/rootfs`。ホストの`/usr`にはインストールしない
 
-現段階ではBinutilsとGCCのブートストラップ構築に対応しています。
-glibcを含む完全なツールチェーン、起動可能イメージ、パッケージ管理は未実装です。
+現段階ではBinutils・GCC・Linux APIヘッダ・glibcのブートストラップ構築と
+Cプログラムのリンク検証に対応しています。libstdc++、起動可能イメージ、パッケージ管理は未実装です。
 LFSのバージョン固定は手順の整合性のためであり、公開リリース前には
 [セキュリティ勧告](https://www.linuxfromscratch.org/lfs/advisories/)と更新を確認します。
 
@@ -123,3 +123,23 @@ make linux-headers
 成功記録は`build/stamps/linux-headers.success`に保存します。
 再実行は新しい作業先を使い、同じ配置先へ上書きします。別バージョンへの更新では
 古いヘッダを自動削除しないため、新しいrootfsから構築してください。
+
+## glibcブートストラップ
+
+```sh
+make glibc-bootstrap
+```
+
+クロスGCCとLinux APIヘッダが必要です。専用コンテナ内で、マニフェストに固定した
+glibcと対応するFHSパッチのSHA-256を検証し、パッチを適用して構築します。
+最低対応カーネルは`config/toolchain.env`で管理します。
+LFS 12.4第5.5節に従い、`DESTDIR`を`build/rootfs`に指定してインストールします。
+
+x86_64向けローダのリンクと`ldd`のパスを整え、Cプログラムをコンパイル・リンクします。
+ヘッダ、起動用オブジェクト、libc、ローダ、リンカの検索先がLightnix側であることを
+確認します。生成したプログラムはこの段階では実行せず、公式テストスイートも実行しません。
+
+ログは`build/logs/glibc-bootstrap.*.log`、作業先は`build/work/glibc-bootstrap.*`、
+リンクの詳細は作業先の`link.log`、成功記録は`build/stamps/glibc-bootstrap.success`です。
+再実行は新しい作業先を使い、同じrootfsへ上書きします。
+後続工程の開始後や別バージョンへの更新では、新しいrootfsから構築してください。

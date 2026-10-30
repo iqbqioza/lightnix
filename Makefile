@@ -1,4 +1,4 @@
-.PHONY: help check-host prepare builder-image builder-check builder-shell fetch verify-sources binutils-bootstrap gcc-bootstrap linux-headers
+.PHONY: help check-host prepare builder-image builder-check builder-shell fetch verify-sources binutils-bootstrap gcc-bootstrap linux-headers glibc-bootstrap
 
 help:
 	@printf '%s\n' 'check-host  LFSビルド環境を検査' 'prepare     検査後に構築先と環境ファイルを作成'
@@ -6,6 +6,10 @@ help:
 	@printf '%s\n' 'binutils-bootstrap  専用コンテナでBinutils pass 1を構築'
 	@printf '%s\n' 'gcc-bootstrap  専用コンテナでGCCのクロスコンパイラを構築'
 	@printf '%s\n' 'linux-headers  Linux APIヘッダを生成・配置・検証'
+	@printf '%s\n' 'glibc-bootstrap  glibcを構築・配置しリンク先を検証'
+
+glibc-bootstrap:
+	bash scripts/builder.sh bash scripts/glibc-bootstrap.sh
 
 linux-headers:
 	bash scripts/builder.sh bash scripts/linux-headers.sh
