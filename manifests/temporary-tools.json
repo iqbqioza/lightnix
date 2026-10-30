@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "baseline": "LFS 12.4 SysV",
+  "scope": "chapter06-temporary-tools",
+  "reference": "https://www.linuxfromscratch.org/lfs/view/12.4/",
+  "checksum_reference": "https://www.linuxfromscratch.org/lfs/view/12.4/md5sums",
+  "packages": [
+    {
+      "name": "m4",
+      "version": "1.4.20",
+      "kind": "archive",
+      "filename": "m4-1.4.20.tar.xz",
+      "url": "https://ftp.gnu.org/gnu/m4/m4-1.4.20.tar.xz",
+      "sha256": "e236ea3a1ccf5f6c270b1c4bb60726f371fa49459a8eaaebc90b216b328daf2b",
+      "lfs_md5": "6eb2ebed5b24e74b6e890919331d2132",
+      "size_bytes": 2044756
+    }
+  ]
+}

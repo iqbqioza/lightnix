@@ -1,4 +1,4 @@
-.PHONY: help check-host prepare builder-image builder-check builder-shell fetch verify-sources binutils-bootstrap gcc-bootstrap linux-headers glibc-bootstrap libstdcxx-bootstrap
+.PHONY: help check-host prepare builder-image builder-check builder-shell fetch verify-sources binutils-bootstrap gcc-bootstrap linux-headers glibc-bootstrap libstdcxx-bootstrap m4-bootstrap
 
 help:
 	@printf '%s\n' 'check-host  LFSビルド環境を検査' 'prepare     検査後に構築先と環境ファイルを作成'
@@ -8,6 +8,10 @@ help:
 	@printf '%s\n' 'linux-headers  Linux APIヘッダを生成・配置・検証'
 	@printf '%s\n' 'glibc-bootstrap  glibcを構築・配置しリンク先を検証'
 	@printf '%s\n' 'libstdcxx-bootstrap  C++標準ライブラリを構築・検証'
+	@printf '%s\n' 'm4-bootstrap  一時環境用M4を構築・検証'
+
+m4-bootstrap:
+	bash scripts/builder.sh bash scripts/m4-bootstrap.sh
 
 libstdcxx-bootstrap:
 	bash scripts/builder.sh bash scripts/libstdcxx-bootstrap.sh
@@ -26,9 +30,11 @@ binutils-bootstrap:
 
 fetch:
 	python3 scripts/sources.py fetch
+	python3 scripts/sources.py fetch --manifest manifests/temporary-tools.json
 
 verify-sources:
 	python3 scripts/sources.py verify
+	python3 scripts/sources.py verify --manifest manifests/temporary-tools.json
 
 builder-image:
 	podman build -t localhost/lightnix-builder container

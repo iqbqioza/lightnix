@@ -165,3 +165,23 @@ vector・string・algorithm・iostreamを使うC++プログラムをリンクし
 リンクの詳細は作業先の`link.log`、成功記録は`build/stamps/libstdcxx-bootstrap.success`です。
 再実行は新しい作業先から同じrootfsへ上書きします。後続工程の開始後やバージョン変更時は、
 新しいrootfsから構築してください。
+
+## 一時ツール: M4
+
+```sh
+make fetch
+make m4-bootstrap
+```
+
+第6章のソースは`manifests/temporary-tools.json`で管理します。
+M4は専用コンテナでクロスコンパイルし、`DESTDIR`を`build/rootfs`に指定して
+`usr/bin/m4`などへインストールします。バージョンと取得先はマニフェストで管理します。
+
+配置したバイナリとビルド結果の一致、ELF64/x86_64形式、動的ローダとlibc依存を確認します。
+同じx86_64ホスト上でLightnixの動的ローダを明示し、ライブラリキャッシュを無効にして
+rootfs内のライブラリを使用したバージョン表示とマクロ展開も検証します。
+これはchrootや起動試験ではなく、M4の公式テストスイートも実行しません。
+
+ログは`build/logs/m4-bootstrap.*.log`、作業先は`build/work/m4-bootstrap.*`、
+動的ライブラリの解決結果は作業先の`libraries.log`、成功記録は
+`build/stamps/m4-bootstrap.success`です。再実行時は新しい作業先で構築します。

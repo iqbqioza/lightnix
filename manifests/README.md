@@ -3,6 +3,9 @@
 `toolchain.json`はLFS 12.4第5章のクロスツールチェーン用の入力を固定する。
 最終システム全体のパッケージ一覧ではない。
 
+`temporary-tools.json`は第6章の一時ツール用。現在はM4を収録し、後続ツールは順次追加する。
+`make fetch`と`make verify-sources`は両マニフェストを対象にする。
+
 - Binutils、GCC、Linux API headers、glibc
 - GCCと一緒に構築するGMP、MPFR、MPC
 - glibcのFHSパッチ
@@ -35,6 +38,6 @@ MD5はLFSのファイルとの対応確認用であり、今後の整合性検�
 
 取得済みのファイルはGit管理外の`sources/`に保持する。
 `make fetch`で取得・検証、`make verify-sources`でオフライン検証を実行する。
-ビルドレシピは次の工程で実装する。
+各ツールのビルドコマンドはルートのREADMEを参照。
 Linuxの項目はAPIヘッダ用であり、配布する起動カーネルの選定を意味しない。
 公開用ビルドへの採用前に、LFSと上流のセキュリティ勧告を確認する。
