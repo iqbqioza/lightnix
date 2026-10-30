@@ -42,4 +42,6 @@ source build/env.sh
 コンテナは第5・6章の非特権ビルド用です。chrootと起動試験は後続段階で専用VMを使います。
 `build/env.sh`はコンテナ内の`/work`を基準に生成されるため、同じコンテナ内で読み込みます。
 検証済みのツール一覧は[環境記録](docs/build-environment.md)にあります。
+クロスツールチェーンのソースは[マニフェスト](manifests/toolchain.json)に固定し、
+ハッシュの出所と対象範囲は[説明](manifests/README.md)に記録しています。
 全体の進め方は[構築計画](docs/roadmap.md)を参照してください。
