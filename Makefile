@@ -1,7 +1,14 @@
-.PHONY: help check-host prepare builder-image builder-check builder-shell
+.PHONY: help check-host prepare builder-image builder-check builder-shell fetch verify-sources
 
 help:
 	@printf '%s\n' 'check-host  LFSビルド環境を検査' 'prepare     検査後に構築先と環境ファイルを作成'
+	@printf '%s\n' 'fetch       ソースを取得・検証（検証済みは再利用）' 'verify-sources  取得済みソースをオフライン検証'
+
+fetch:
+	python3 scripts/sources.py fetch
+
+verify-sources:
+	python3 scripts/sources.py verify
 
 builder-image:
 	podman build -t localhost/lightnix-builder container
