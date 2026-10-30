@@ -62,3 +62,23 @@ Python 3の標準ライブラリでマニフェストを読み、HTTPSで`source
 失敗した`.part`は保持し、次回は最初から取得し直します。
 `verify-sources`は通信せず、不足・不一致があれば失敗します。
 `fetch`の同時実行はロックで拒否します。
+
+## Binutils pass 1
+
+```sh
+make fetch
+make binutils-bootstrap
+```
+
+`make builder-image`で作成した専用コンテナを使い、LFS 12.4第5.2節の設定で
+Binutils 2.45を構築します。ホスト検査と構築先の準備を行い、マニフェストの
+Binutilsを検証してから展開します。ネットワークによる自動取得は行いません。
+
+インストール先は`build/rootfs/tools`です。アセンブラ・リンカのバージョン、
+ターゲット、sysrootを検証し、小さなアセンブリをELF64/x86_64実行形式にリンクして
+ヘッダを確認します。これはBinutilsの動作確認で、公式テストスイートの実行ではありません。
+
+ログは`build/logs/binutils-bootstrap.*.log`、ソースとビルド結果は
+`build/work/binutils-bootstrap.*`に保持します。成功後に`build/stamps/binutils-bootstrap.success`へ
+ログと作業先を記録します。再実行時は新しい作業先で再構築して同じtoolsへインストールし、
+古い作業先は残します。後続のツールチェーン構築を始めた後の再実行は避けてください。
