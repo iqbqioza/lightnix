@@ -105,3 +105,19 @@ x86向けAPIヘッダを生成した。ソースのSHA-256を検証した後、1
 - defineマクロの展開結果が`Lightnix`になることを実行して確認
 
 chroot・起動試験およびM4公式テストスイートは未実行。
+
+## 一時ツールNcursesの検証結果
+
+2026-10-30、`make ncurses-bootstrap`でNcurses 6.5-20250809を構築した。
+上流のLFS指定URLが404だったためLFSソースミラーを使用し、公式MD5との一致を
+確認してSHA-256を記録した。
+
+- ホスト用ticを構築・配置し、バージョン`6.5.20250809`を確認
+- Lightnix向け共有ライブラリ、C++共有バインディング、ヘッダ、terminfoを配置
+- `libncurses.so`がwide-characterライブラリを指すことと、ヘッダのABIを確認
+- クロスGCCでヘッダのバージョンをコンパイル検証し、Ncursesとlibcのリンク先を確認
+- ELF64/x86_64、動的ローダのパス、RPATH/RUNPATHの不在を確認
+- Lightnixのローダでサンプルを実行し、rootfsのterminfoからxtermのclear機能を取得
+- 実行時の依存ライブラリがrootfs内から解決されることを確認
+
+対話的な画面描画、chroot、Ncurses公式テストスイートは未実行。

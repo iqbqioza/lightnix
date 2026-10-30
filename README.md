@@ -185,3 +185,25 @@ rootfs内のライブラリを使用したバージョン表示とマクロ展�
 ログは`build/logs/m4-bootstrap.*.log`、作業先は`build/work/m4-bootstrap.*`、
 動的ライブラリの解決結果は作業先の`libraries.log`、成功記録は
 `build/stamps/m4-bootstrap.success`です。再実行時は新しい作業先で構築します。
+
+## 一時ツール: Ncurses
+
+```sh
+make fetch
+make ncurses-bootstrap
+```
+
+LFS 12.4第6.3節に従い、まずホスト用`tic`を構築し、`build/rootfs/tools/bin`へ
+インストールします。続いて別のビルドディレクトリでLightnix向けの共有ライブラリ、
+C++共有バインディング、ヘッダ、端末データベースを構築してrootfsへ配置します。
+ソースとバージョンは一時ツールのマニフェストで管理します。
+
+`libncurses.so`は`libncursesw.so`へのリンクとし、`curses.h`もwide-character ABIを
+使うようLFSの手順どおりに調整します。ホスト用`tic`のバージョンと、標準ヘッダ、
+ライブラリ、ELF形式、動的ローダを検証します。さらにLightnixのローダとライブラリを
+明示してサンプルを実行し、rootfsのterminfoからxtermの端末情報を取得できることを確認します。
+対話的な画面描画、chroot、公式テストスイートは検証対象に含めません。
+
+ログは`build/logs/ncurses-bootstrap.*.log`、作業先は`build/work/ncurses-bootstrap.*`、
+リンクと実行時ライブラリの詳細は作業先の`link.log`と`libraries.log`、
+成功記録は`build/stamps/ncurses-bootstrap.success`です。
