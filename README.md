@@ -12,8 +12,8 @@
 - 起動: まずQEMU、後から実機用のカーネル設定と起動メディア
 - 配置先: リポジトリ内の`build/rootfs`。ホストの`/usr`にはインストールしない
 
-現段階ではBinutils・GCC・Linux APIヘッダ・glibcのブートストラップ構築と
-Cプログラムのリンク検証に対応しています。libstdc++、起動可能イメージ、パッケージ管理は未実装です。
+現段階ではBinutils・GCC・Linux APIヘッダ・glibc・libstdc++のブートストラップ構築と
+C/C++プログラムのリンク検証に対応しています。起動可能イメージ、パッケージ管理は未実装です。
 LFSのバージョン固定は手順の整合性のためであり、公開リリース前には
 [セキュリティ勧告](https://www.linuxfromscratch.org/lfs/advisories/)と更新を確認します。
 
@@ -143,3 +143,25 @@ x86_64向けローダのリンクと`ldd`のパスを整え、Cプログラム�
 リンクの詳細は作業先の`link.log`、成功記録は`build/stamps/glibc-bootstrap.success`です。
 再実行は新しい作業先を使い、同じrootfsへ上書きします。
 後続工程の開始後や別バージョンへの更新では、新しいrootfsから構築してください。
+
+## libstdc++ブートストラップ
+
+```sh
+make libstdcxx-bootstrap
+```
+
+クロスGCCとglibcが必要です。マニフェストのGCCアーカイブをSHA-256検証し、
+新しい作業先に展開して、その中のlibstdc++をLFS 12.4第5.6節に従って構築します。
+GCCのバージョンを直書きせず、標準ヘッダのインストール先にもマニフェストの値を使います。
+`DESTDIR`は`build/rootfs`です。ライブラリは`usr/lib`、標準ヘッダはクロスGCCが
+参照する`tools/<ターゲット>/include/c++/<バージョン>`に配置します。
+
+クロスコンパイルの妨げになるlibtoolの`.la`を対象ライブラリから削除した後、
+vector・string・algorithm・iostreamを使うC++プログラムをリンクします。
+ヘッダとlibstdc++・libcの参照先、動的ローダ、ELFの依存ライブラリを検証します。
+生成したプログラムと公式テストスイートは、この段階では実行しません。
+
+ログは`build/logs/libstdcxx-bootstrap.*.log`、作業先は`build/work/libstdcxx-bootstrap.*`、
+リンクの詳細は作業先の`link.log`、成功記録は`build/stamps/libstdcxx-bootstrap.success`です。
+再実行は新しい作業先から同じrootfsへ上書きします。後続工程の開始後やバージョン変更時は、
+新しいrootfsから構築してください。

@@ -76,3 +76,19 @@ x86向けAPIヘッダを生成した。ソースのSHA-256を検証した後、1
 
 リンクの詳細は作業先の`link.log`に保持している。生成したプログラムとglibcの
 公式テストスイートは実行していない。次はlibstdc++を構築する。
+
+## libstdc++の検証結果
+
+2026-10-30、`make libstdcxx-bootstrap`でGCC 15.2.0のソースをSHA-256検証し、
+そこからlibstdc++を構築して`DESTDIR=/work/build/rootfs`でインストールした。
+コンパイルとインストールは約1分。LFSの手順に従い、対象ライブラリの`.la`を削除した。
+
+- vector、string、algorithm、iostreamを使うC++プログラムをコンパイル・リンク
+- `_GLIBCXX_RELEASE`がマニフェストのGCCメジャーバージョンに一致することを確認
+- 標準ヘッダの検索先がrootfs内であることを検証
+- libstdc++とlibcの実際のリンク先がrootfs内であることを検証
+- ELFの動的ローダと`libstdc++.so.6`、`libc.so.6`への依存を確認
+- sysroot基準のリンカ検索先と、RPATH/RUNPATHを埋め込んでいないことを確認
+
+生成したプログラムと公式テストスイートは実行していない。
+これでLFS第5章のクロスツールチェーンの構築とリンク検証が揃った。
